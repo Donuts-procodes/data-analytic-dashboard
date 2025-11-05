@@ -1,4 +1,4 @@
-<!-- templates/analysis.html - Analysis Results Page -->
+<!-- templates/analysis.html - Optimized with Dark Mode & Responsive -->
 
 <!DOCTYPE html>
 <html>
@@ -8,184 +8,459 @@
     <title>Data Analysis - {{ filename }}</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --light-bg: #f5f7fa;
+            --card-bg: #ffffff;
+            --text-primary: #1a202c;
+            --text-secondary: #718096;
+            --border: #e2e8f0;
+            --shadow: 0 2px 10px rgba(0,0,0,0.1);
+            --shadow-lg: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        body.dark-mode {
+            --light-bg: #0f1419;
+            --card-bg: #1a202c;
+            --text-primary: #e2e8f0;
+            --text-secondary: #a0aec0;
+            --border: #2d3748;
+            --shadow: 0 2px 10px rgba(0,0,0,0.3);
+            --shadow-lg: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
         body {
-            font-family: Arial, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
             min-height: 100vh;
-            color: #333;
+            color: var(--text-primary);
+            transition: all 0.3s ease;
         }
+
         .navbar {
-            background: white;
+            background: var(--card-bg);
             padding: 15px 20px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            box-shadow: var(--shadow);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
         }
+
+        .navbar-left {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
         .navbar a {
-            color: #667eea;
+            color: var(--primary);
             text-decoration: none;
             font-weight: 600;
-            margin-right: 20px;
+            transition: color 0.3s;
         }
+
+        .navbar a:hover {
+            color: var(--secondary);
+        }
+
+        .dark-mode-toggle {
+            background: var(--light-bg);
+            border: 2px solid var(--border);
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--text-primary);
+            transition: all 0.3s;
+        }
+
+        .dark-mode-toggle:hover {
+            background: var(--primary);
+            color: white;
+        }
+
         .container {
             max-width: 1200px;
             margin: 20px auto;
-            padding: 0 20px;
+            padding: 0 15px;
         }
+
         .page-header {
-            background: rgba(255,255,255,0.95);
-            padding: 20px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            background: var(--card-bg);
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            box-shadow: var(--shadow);
         }
+
         .page-header h1 {
-            color: #667eea;
+            color: var(--primary);
             margin-bottom: 10px;
+            font-size: 1.8em;
         }
+
         .page-header p {
-            color: #666;
+            color: var(--text-secondary);
+            word-break: break-all;
         }
+
         .tabs {
             display: flex;
             gap: 10px;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
             flex-wrap: wrap;
         }
+
         .tab-btn {
-            padding: 10px 20px;
+            padding: 12px 20px;
             border: none;
-            background: white;
+            background: var(--card-bg);
             cursor: pointer;
-            border-radius: 5px;
+            border-radius: 8px;
             font-weight: 600;
-            color: #667eea;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            color: var(--text-primary);
+            box-shadow: var(--shadow);
             transition: all 0.3s;
+            white-space: nowrap;
         }
+
         .tab-btn.active {
-            background: #667eea;
+            background: var(--primary);
             color: white;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
         }
+
         .tab-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            box-shadow: var(--shadow-lg);
         }
+
         .tab-content {
             display: none;
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            background: var(--card-bg);
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            animation: fadeIn 0.3s ease;
         }
+
         .tab-content.active {
             display: block;
         }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
         .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .stat-card {
+            background: var(--light-bg);
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid var(--primary);
+            text-align: center;
+            transition: transform 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.9em;
+            margin-bottom: 8px;
+        }
+
+        .stat-value {
+            font-size: 2em;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        h2, h3 {
+            color: var(--text-primary);
+            margin: 20px 0 15px 0;
+        }
+
+        /* TABLE FIX - HORIZONTAL OVERFLOW */
+        .table-wrapper {
+            overflow-x: auto;
+            border-radius: 8px;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+            -webkit-overflow-scrolling: touch;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--card-bg);
+            min-width: 400px;
+        }
+
+        th {
+            background: var(--light-bg);
+            padding: 15px;
+            text-align: left;
+            font-weight: 700;
+            color: var(--text-primary);
+            border-bottom: 2px solid var(--border);
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 12px 15px;
+            border-bottom: 1px solid var(--border);
+            color: var(--text-primary);
+            word-break: break-word;
+        }
+
+        tr:hover {
+            background: var(--light-bg);
+        }
+
+        .chart-container {
+            margin-top: 25px;
+        }
+
+        .chart-options {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
             gap: 15px;
             margin-bottom: 20px;
         }
-        .stat-card {
-            background: #f9f9f9;
-            padding: 15px;
-            border-radius: 8px;
-            border-left: 4px solid #667eea;
-            text-align: center;
-        }
-        .stat-label {
-            color: #999;
-            font-size: 0.9em;
-            margin-bottom: 5px;
-        }
-        .stat-value {
-            font-size: 1.8em;
-            font-weight: 700;
-            color: #667eea;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 15px;
-        }
-        th {
-            background: #f0f0f0;
-            padding: 10px;
-            text-align: left;
-            font-weight: 600;
-            border-bottom: 2px solid #ddd;
-        }
-        td {
-            padding: 10px;
-            border-bottom: 1px solid #eee;
-        }
-        tr:hover {
-            background: #f9f9f9;
-        }
-        .chart-container {
-            margin-top: 20px;
-        }
+
         .chart-buttons {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
             gap: 10px;
-            margin-bottom: 15px;
         }
+
         .chart-btn {
             padding: 10px;
-            border: 2px solid #ddd;
-            background: white;
-            border-radius: 5px;
+            border: 2px solid var(--border);
+            background: var(--light-bg);
+            border-radius: 8px;
             cursor: pointer;
             font-weight: 600;
-            color: #667eea;
+            color: var(--text-primary);
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+
+        .chart-btn:hover {
+            border-color: var(--primary);
+            background: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .chart-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .column-select {
+            padding: 10px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-size: 1em;
+            background: var(--light-bg);
+            color: var(--text-primary);
+            cursor: pointer;
+            width: 100%;
+            max-width: 300px;
             transition: all 0.3s;
         }
-        .chart-btn:hover {
-            border-color: #667eea;
-            background: #f0f0f0;
+
+        .column-select:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: var(--card-bg);
         }
-        .chart-btn.active {
-            background: #667eea;
-            color: white;
-            border-color: #667eea;
-        }
-        .column-select {
-            padding: 8px;
-            border: 2px solid #ddd;
-            border-radius: 5px;
-            font-size: 1em;
-        }
+
         .chart-display {
             text-align: center;
-            padding: 20px;
-            background: #f9f9f9;
+            padding: 30px;
+            background: var(--light-bg);
             border-radius: 8px;
-            margin-top: 15px;
+            margin-top: 20px;
+            min-height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
+
         .chart-display img {
             max-width: 100%;
             height: auto;
             border-radius: 8px;
         }
+
         .loading {
             text-align: center;
-            color: #667eea;
+            color: var(--primary);
+            font-weight: 600;
         }
+
         .back-link {
             display: inline-block;
             margin-bottom: 15px;
             color: white;
             text-decoration: none;
             font-weight: 600;
+            transition: all 0.3s;
         }
+
         .back-link:hover {
-            text-decoration: underline;
+            transform: translateX(-5px);
+        }
+
+        /* RESPONSIVE DESIGN */
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 12px 15px;
+            }
+
+            .navbar-left {
+                width: 100%;
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .dark-mode-toggle {
+                width: 100%;
+            }
+
+            .page-header {
+                padding: 15px;
+            }
+
+            .page-header h1 {
+                font-size: 1.4em;
+            }
+
+            .container {
+                padding: 0 10px;
+            }
+
+            .tab-btn {
+                padding: 10px 15px;
+                font-size: 0.9em;
+            }
+
+            .tabs {
+                gap: 5px;
+            }
+
+            .tab-content {
+                padding: 15px;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+                gap: 10px;
+            }
+
+            .stat-card {
+                padding: 15px;
+            }
+
+            .stat-value {
+                font-size: 1.5em;
+            }
+
+            th {
+                padding: 10px;
+                font-size: 0.9em;
+            }
+
+            td {
+                padding: 8px;
+                font-size: 0.9em;
+            }
+
+            .chart-options {
+                grid-template-columns: 1fr;
+            }
+
+            .column-select {
+                max-width: 100%;
+            }
+
+            .chart-display {
+                padding: 20px;
+                min-height: 250px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .page-header h1 {
+                font-size: 1.2em;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .stat-value {
+                font-size: 1.2em;
+            }
+
+            .chart-buttons {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .tab-btn {
+                padding: 8px 12px;
+                font-size: 0.85em;
+            }
+
+            table {
+                min-width: 300px;
+                font-size: 0.85em;
+            }
+        }
+
+        /* SCROLLBAR STYLING */
+        .table-wrapper::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        .table-wrapper::-webkit-scrollbar-track {
+            background: var(--light-bg);
+            border-radius: 10px;
+        }
+
+        .table-wrapper::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 10px;
+        }
+
+        .table-wrapper::-webkit-scrollbar-thumb:hover {
+            background: var(--secondary);
         }
     </style>
 </head>
 <body>
     <div class="navbar">
-        <a href="/">← Back to Home</a>
+        <div class="navbar-left">
+            <a href="/">← Back to Home</a>
+        </div>
+        <button class="dark-mode-toggle" onclick="toggleDarkMode()">🌙 Dark Mode</button>
     </div>
 
     <div class="container">
@@ -207,90 +482,96 @@
             <h2>Data Overview</h2>
             <div class="stats-grid">
                 <div class="stat-card">
-                    <div class="stat-label">Rows</div>
+                    <div class="stat-label">📊 Rows</div>
                     <div class="stat-value">{{ data.overview.rows }}</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-label">Columns</div>
+                    <div class="stat-label">📋 Columns</div>
                     <div class="stat-value">{{ data.overview.columns }}</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-label">Missing</div>
+                    <div class="stat-label">⚠️ Missing</div>
                     <div class="stat-value">{{ data.overview.missing_values.values()|sum }}</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-label">Duplicates</div>
+                    <div class="stat-label">🔄 Duplicates</div>
                     <div class="stat-value">{{ data.overview.duplicate_rows }}</div>
                 </div>
             </div>
 
-            <h3 style="margin-top: 20px; margin-bottom: 10px;">Column Information</h3>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Column Name</th>
-                        <th>Data Type</th>
-                        <th>Missing Values</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for col in data.overview.column_names %}
-                    <tr>
-                        <td><strong>{{ col }}</strong></td>
-                        <td>{{ data.overview.dtypes[col] }}</td>
-                        <td>{{ data.overview.missing_values[col] }}</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+            <h3>Column Information</h3>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Column Name</th>
+                            <th>Data Type</th>
+                            <th>Missing Values</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for col in data.overview.column_names %}
+                        <tr>
+                            <td><strong>{{ col }}</strong></td>
+                            <td>{{ data.overview.dtypes[col] }}</td>
+                            <td>{{ data.overview.missing_values[col] }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </div>
 
         <!-- Statistics Tab -->
         <div id="stats" class="tab-content">
             <h2>Statistical Summary</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Statistic</th>
-                        {% for col in data.statistics.keys() %}
-                        <th>{{ col }}</th>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Statistic</th>
+                            {% for col in data.statistics.keys() %}
+                            <th>{{ col }}</th>
+                            {% endfor %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for stat in ['count', 'mean', 'std', 'min', '25%', '50%', '75%', 'max'] %}
+                        <tr>
+                            <td><strong>{{ stat }}</strong></td>
+                            {% for col in data.statistics.keys() %}
+                            <td>{{ "%.2f"|format(data.statistics[col].get(stat, 0)) }}</td>
+                            {% endfor %}
+                        </tr>
                         {% endfor %}
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for stat in ['count', 'mean', 'std', 'min', '25%', '50%', '75%', 'max'] %}
-                    <tr>
-                        <td><strong>{{ stat }}</strong></td>
-                        {% for col in data.statistics.keys() %}
-                        <td>{{ "%.2f"|format(data.statistics[col].get(stat, 0)) }}</td>
-                        {% endfor %}
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+                    </tbody>
+                </table>
+            </div>
         </div>
 
         <!-- Preview Tab -->
         <div id="preview" class="tab-content">
             <h2>Data Preview</h2>
-            <table>
-                <thead>
-                    <tr>
-                        {% for col in data.overview.column_names %}
-                        <th>{{ col }}</th>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            {% for col in data.overview.column_names %}
+                            <th>{{ col }}</th>
+                            {% endfor %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in data.head %}
+                        <tr>
+                            {% for col in data.overview.column_names %}
+                            <td>{{ row[col] }}</td>
+                            {% endfor %}
+                        </tr>
                         {% endfor %}
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for row in data.head %}
-                    <tr>
-                        {% for col in data.overview.column_names %}
-                        <td>{{ row[col] }}</td>
-                        {% endfor %}
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+                    </tbody>
+                </table>
+            </div>
         </div>
 
         <!-- Charts Tab -->
@@ -300,16 +581,16 @@
             <div class="chart-container">
                 <h3>Chart Type</h3>
                 <div class="chart-buttons" id="chartButtons">
-                    <button class="chart-btn active" data-chart="histogram">Histogram</button>
-                    <button class="chart-btn" data-chart="scatter">Scatter</button>
-                    <button class="chart-btn" data-chart="correlation">Heatmap</button>
-                    <button class="chart-btn" data-chart="boxplot">Box Plot</button>
-                    <button class="chart-btn" data-chart="line">Line Chart</button>
-                    <button class="chart-btn" data-chart="bar">Bar Chart</button>
-                    <button class="chart-btn" data-chart="distribution">Distribution</button>
+                    <button class="chart-btn active" data-chart="histogram">📊 Histogram</button>
+                    <button class="chart-btn" data-chart="scatter">📍 Scatter</button>
+                    <button class="chart-btn" data-chart="correlation">🔥 Heatmap</button>
+                    <button class="chart-btn" data-chart="boxplot">📦 Box Plot</button>
+                    <button class="chart-btn" data-chart="line">📈 Line</button>
+                    <button class="chart-btn" data-chart="bar">📊 Bar</button>
+                    <button class="chart-btn" data-chart="distribution">📉 Distribution</button>
                 </div>
 
-                <h3>Select Column</h3>
+                <h3 style="margin-top: 20px;">Select Column</h3>
                 <select id="columnInput" class="column-select" onchange="generateChart()">
                     <option value="">-- Select a column --</option>
                     {% for col in data.numeric_columns %}
@@ -318,7 +599,7 @@
                 </select>
 
                 <div class="chart-display" id="chartDisplay">
-                    <p style="color: #999;">Select a chart type and column to generate visualization</p>
+                    <p style="color: var(--text-secondary);">Select a chart type and column to generate visualization</p>
                 </div>
             </div>
         </div>
@@ -328,8 +609,18 @@
         let selectedChart = 'histogram';
         const filename = '{{ filename }}';
 
+        // Dark Mode Toggle
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
+        }
+
+        // Load dark mode preference
+        if (localStorage.getItem('darkMode') === 'true') {
+            document.body.classList.add('dark-mode');
+        }
+
         function showTab(tabName) {
-            // Hide all tabs
             document.querySelectorAll('.tab-content').forEach(tab => {
                 tab.classList.remove('active');
             });
@@ -337,12 +628,10 @@
                 btn.classList.remove('active');
             });
 
-            // Show selected tab
             document.getElementById(tabName).classList.add('active');
             event.target.classList.add('active');
         }
 
-        // Chart type selection
         document.querySelectorAll('.chart-btn').forEach(btn => {
             btn.addEventListener('click', function() {
                 document.querySelectorAll('.chart-btn').forEach(b => b.classList.remove('active'));
@@ -373,13 +662,13 @@
             .then(response => response.json())
             .then(data => {
                 if (data.status === 'success') {
-                    display.innerHTML = `<img src="/static/images/${data.chart}">`;
+                    display.innerHTML = `<img src="/static/images/${data.chart}" alt="Chart">`;
                 } else {
-                    display.innerHTML = `<p style="color: red;">Error: ${data.error}</p>`;
+                    display.innerHTML = `<p style="color: #f56565;">Error: ${data.error}</p>`;
                 }
             })
             .catch(error => {
-                display.innerHTML = `<p style="color: red;">Error: ${error}</p>`;
+                display.innerHTML = `<p style="color: #f56565;">Error: ${error}</p>`;
             });
         }
     </script>

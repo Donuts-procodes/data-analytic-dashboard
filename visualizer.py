@@ -1,3 +1,5 @@
+import matplotlib
+matplotlib.use('Agg')  # Add this line at the very top!
 # visualizer.py - Data Visualization Module
 
 import matplotlib.pyplot as plt
